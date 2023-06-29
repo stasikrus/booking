@@ -1,11 +1,11 @@
 import React from "react";
 import PlaceCard from "../place-card/place-card";
 import PropTypes from "prop-types";
+import TYPES from "../../types";
 
 const MainPage = ({offerCards}) => {
-  console.log(offerCards)
   const cards = offerCards.map((card) => {
-    return <PlaceCard card={card} key={card.id} />
+    return <PlaceCard card={card} key={card.id} />;
   });
 
   return (
@@ -105,8 +105,10 @@ const MainPage = ({offerCards}) => {
   );
 };
 
-// MainPage.propTypes = {
-//   placesCount: PropTypes.number.isRequired,
-// };
+MainPage.propTypes = {
+  offerCards: PropTypes.arrayOf(
+      PropTypes.shape(TYPES)
+  ).isRequired
+};
 
 export default MainPage;

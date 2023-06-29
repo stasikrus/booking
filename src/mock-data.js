@@ -13,8 +13,8 @@ const offerCards = [
     href: `#`,
     img: `img/apartment-01.jpg`,
     price: 80,
-    name: 'Wood and stone place',
-    type: 'Private room',
+    name: `Wood and stone place`,
+    type: `Private room`,
     premium: false,
   },
   {

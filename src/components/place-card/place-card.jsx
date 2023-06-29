@@ -1,4 +1,6 @@
 import React from "react";
+import TYPES from "../../types";
+import PropTypes from "prop-types";
 
 const PlaceCard = ({card}) => {
   const {href, img, price, name, type, premium} = card;
@@ -45,6 +47,10 @@ const PlaceCard = ({card}) => {
       </div>
     </article>
   );
+};
+
+PlaceCard.propTypes = {
+  card: PropTypes.shape(TYPES).isRequired
 };
 
 export default PlaceCard;

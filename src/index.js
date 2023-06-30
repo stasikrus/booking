@@ -1,10 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./components/app/app";
-import offerCards from "./mock-data";
-
+import offersData from "./mocks/offers";
 
 ReactDOM.render(
-    <App offerCards={offerCards} />,
+    <App offerCards={offersData} />,
     document.querySelector(`#root`)
 );

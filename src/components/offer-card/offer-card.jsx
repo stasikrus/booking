@@ -2,11 +2,22 @@ import React from "react";
 import TYPES from "../../types";
 import PropTypes from "prop-types";
 
-const PlaceCard = ({card}) => {
-  const {href, img, price, name, type, premium} = card;
+const OfferCard = ({card, onOfferCardHover}) => {
+  const {id, href, img, price, name, type, premium} = card;
+
+  const handleMouseEnter = () => {
+    onOfferCardHover(id);
+  };
+
+  const handleMouseLeave = () => {
+    onOfferCardHover(null);
+  };
 
   return (
-    <article className="cities__place-card place-card">
+    <article className="cities__place-card place-card"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <div className="place-card__mark">
         <span>{premium ? `Premium` : ``}</span>
       </div>
@@ -49,8 +60,9 @@ const PlaceCard = ({card}) => {
   );
 };
 
-PlaceCard.propTypes = {
-  card: PropTypes.shape(TYPES).isRequired
+OfferCard.propTypes = {
+  card: PropTypes.shape(TYPES).isRequired,
+  onOfferCardHover: PropTypes.bool.isRequired
 };
 
-export default PlaceCard;
+export default OfferCard;

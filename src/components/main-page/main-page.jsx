@@ -1,13 +1,9 @@
 import React from "react";
-import PlaceCard from "../place-card/place-card";
 import PropTypes from "prop-types";
 import TYPES from "../../types";
+import OfferList from "../offers-list/offers-list";
 
 const MainPage = ({offerCards}) => {
-  const cards = offerCards.map((card) => {
-    return <PlaceCard card={card} key={card.id} />;
-  });
-
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -92,7 +88,7 @@ const MainPage = ({offerCards}) => {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                {cards}
+                <OfferList offerCards={offerCards} />
               </div>
             </section>
             <div className="cities__right-section">

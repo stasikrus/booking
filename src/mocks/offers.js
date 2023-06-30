@@ -1,4 +1,4 @@
-const offerCards = [
+const offersData = [
   {
     id: 1,
     href: `#`,
@@ -46,4 +46,4 @@ const offerCards = [
   }
 ];
 
-export default offerCards;
+export default offersData;

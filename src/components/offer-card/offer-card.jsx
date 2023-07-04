@@ -1,8 +1,9 @@
 import React from "react";
 import TYPES from "../../types";
 import PropTypes from "prop-types";
+import {Link} from "react-router-dom";
 
-const OfferCard = ({card, onOfferCardHover}) => {
+const OfferCard = ({card, onOfferCardHover, onOfferCardClick}) => {
   const {id, href, img, price, name, type, premium} = card;
 
   const handleMouseEnter = () => {
@@ -11,6 +12,10 @@ const OfferCard = ({card, onOfferCardHover}) => {
 
   const handleMouseLeave = () => {
     onOfferCardHover(null);
+  };
+
+  const handleMouseClick = () => {
+    onOfferCardClick(id);
   };
 
   return (
@@ -52,7 +57,14 @@ const OfferCard = ({card, onOfferCardHover}) => {
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{name}</a>
+          <Link to={{
+            pathname: `/offer/${id}`,
+            state: {offer: card}
+          }}
+          onClick={handleMouseClick}
+          >
+            {name}
+          </Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>
@@ -62,7 +74,8 @@ const OfferCard = ({card, onOfferCardHover}) => {
 
 OfferCard.propTypes = {
   card: PropTypes.shape(TYPES).isRequired,
-  onOfferCardHover: PropTypes.bool.isRequired
+  onOfferCardHover: PropTypes.func.isRequired,
+  onOfferCardClick: PropTypes.func.isRequired
 };
 
 export default OfferCard;

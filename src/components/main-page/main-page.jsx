@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import TYPES from "../../types";
 import OfferList from "../offers-list/offers-list";
 
-const MainPage = ({offerCards}) => {
+const MainPage = ({offerCards, offerCardHover, offerCardClick}) => {
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -88,7 +88,7 @@ const MainPage = ({offerCards}) => {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <OfferList offerCards={offerCards} />
+                <OfferList offerCards={offerCards} offerCardHover={offerCardHover} offerCardClick={offerCardClick} />
               </div>
             </section>
             <div className="cities__right-section">
@@ -104,7 +104,9 @@ const MainPage = ({offerCards}) => {
 MainPage.propTypes = {
   offerCards: PropTypes.arrayOf(
       PropTypes.shape(TYPES)
-  ).isRequired
+  ).isRequired,
+  offerCardHover: PropTypes.func.isRequired,
+  offerCardClick: PropTypes.func.isRequired
 };
 
 export default MainPage;

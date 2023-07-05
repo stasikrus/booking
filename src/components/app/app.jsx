@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import MainPage from "../main-page/main-page";
 import RoomPage from "../room-page/room-page";
 import FavoritesPage from "../favorites-page/favorites-page";
@@ -9,26 +9,12 @@ import TYPES from "../../types";
 import {Switch, Route, BrowserRouter} from "react-router-dom";
 
 const App = ({offerCards}) => {
-  const [, setHoveredOfferId] = useState(null);
-  const [clickOfferId, setClickOfferId] = useState(null);
-
-  const handleOfferCardHover = (offerId) => {
-    setHoveredOfferId(offerId);
-  };
-
-  const handleOfferCardClick = (offerId) => {
-    setClickOfferId(offerId);
-  };
 
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path="/">
-          <MainPage
-            offerCards={offerCards}
-            offerCardHover={handleOfferCardHover}
-            offerCardClick={handleOfferCardClick}
-          />
+          <MainPage offerCards={offerCards} />
         </Route>
         <Route exact path="/login">
           <LoginPage />
@@ -36,14 +22,8 @@ const App = ({offerCards}) => {
         <Route exact path="/favorites">
           <FavoritesPage offerCards={offerCards} />
         </Route>
-        <Route exact path="/offer/:id?">
-          {clickOfferId !== null ? (
-            <RoomPage
-              offer={offerCards.find((card) => card.id === clickOfferId)}
-            />
-          ) : (
-            <RoomPage offer={offerCards[0]} />
-          )}
+        <Route exact path="/offer/:id">
+            <RoomPage offer={offerCards} />
         </Route>
         <Route>
           <NotFoundPage />

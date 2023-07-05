@@ -1,14 +1,15 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import CommentForm from "../comment-form/comment-form";
 import PropTypes from "prop-types";
 import TYPES from "../../types";
 
 const RoomPage = ({offer}) => {
-  if (!offer) {
-    return null;
-  }
-  const {id, href, img, price, name, type, premium} = offer;
+  const location = useLocation();
+
+  const currentOffer = offer.find((item) => item.id === location.state.id);
+
+  const { name, premium, price } = currentOffer;
 
   return (
     <div className="page">
@@ -235,7 +236,7 @@ const RoomPage = ({offer}) => {
 };
 
 RoomPage.propTypes = {
-  offer: PropTypes.shape(TYPES).isRequired,
+  offer: PropTypes.arrayOf(PropTypes.shape(TYPES)).isRequired,
 };
 
 export default RoomPage;

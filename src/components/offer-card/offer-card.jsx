@@ -59,7 +59,7 @@ const OfferCard = ({card, onOfferCardHover, onOfferCardClick}) => {
         <h2 className="place-card__name">
           <Link to={{
             pathname: `/offer/${id}`,
-            state: {offer: card}
+            state: {id}
           }}
           onClick={handleMouseClick}
           >

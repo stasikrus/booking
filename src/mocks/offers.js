@@ -1,4 +1,6 @@
-const offersData = [
+export const city = [52.38333, 4.9];
+
+export const offersData = [
   {
     id: 1,
     href: `#`,
@@ -7,6 +9,10 @@ const offersData = [
     name: `Beautiful & luxurious apartment at great location`,
     type: `Apartment`,
     premium: true,
+    location: {
+      latitude: 52.3909553943508,
+      longitude: 4.85309666406198
+    }
   },
   {
     id: 2,
@@ -16,6 +22,10 @@ const offersData = [
     name: `Wood and stone place`,
     type: `Private room`,
     premium: false,
+    location: {
+      latitude: 52.369553943508,
+      longitude: 4.85309666406198
+    }
   },
   {
     id: 3,
@@ -25,6 +35,10 @@ const offersData = [
     name: `Canal View Prinsengracht`,
     type: `Apartment`,
     premium: false,
+    location: {
+      latitude: 52.3909553943508,
+      longitude: 4.929309666406198
+    }
   },
   {
     id: 4,
@@ -34,6 +48,10 @@ const offersData = [
     name: `Nice, cozy, warm big bed apartment`,
     type: `Apartment`,
     premium: false,
+    location: {
+      latitude: 52.3809553943508,
+      longitude: 4.939309666406198
+    }
   },
   {
     id: 5,
@@ -43,7 +61,9 @@ const offersData = [
     name: `Wood and stone place`,
     type: `Private room`,
     premium: false,
+    location: {
+      latitude: 52.3909553943508,
+      longitude: 4.85309666406198
+    }
   }
 ];
-
-export default offersData;

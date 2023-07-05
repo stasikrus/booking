@@ -1,9 +1,22 @@
-import React from "react";
+import React, {useState} from "react";
 import PropTypes from "prop-types";
 import TYPES from "../../types";
 import OfferList from "../offers-list/offers-list";
+import Map from "../map/map";
+import { city } from "../../mocks/offers";
 
-const MainPage = ({offerCards, offerCardHover, offerCardClick}) => {
+const MainPage = ({offerCards}) => {
+  const [hoveredOfferId, setHoveredOfferId] = useState(null);
+  const [clickOfferId, setClickOfferId] = useState(null);
+
+  const handleOfferCardHover = (offerId) => {
+    setHoveredOfferId(offerId);
+  };
+
+  const handleOfferCardClick = (offerId) => {
+    setClickOfferId(offerId);
+  };
+
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -88,11 +101,13 @@ const MainPage = ({offerCards, offerCardHover, offerCardClick}) => {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <OfferList offerCards={offerCards} offerCardHover={offerCardHover} offerCardClick={offerCardClick} />
+                <OfferList offerCards={offerCards} offerCardHover={handleOfferCardHover} offerCardClick={handleOfferCardClick} />
               </div>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <section className="cities__map map">
+                <Map city={city} points={offerCards} isActiveMarker={hoveredOfferId} />
+              </section>
             </div>
           </div>
         </div>
@@ -105,8 +120,6 @@ MainPage.propTypes = {
   offerCards: PropTypes.arrayOf(
       PropTypes.shape(TYPES)
   ).isRequired,
-  offerCardHover: PropTypes.func.isRequired,
-  offerCardClick: PropTypes.func.isRequired
 };
 
 export default MainPage;

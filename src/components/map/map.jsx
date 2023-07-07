@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import "leaflet/dist/leaflet.css";
 
-const Map = ({ city, points, isActiveMarker }) => {
+const Map = ({ city, points, heightMap, isActiveMarker }) => {
   const mapRef = useRef();
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const Map = ({ city, points, isActiveMarker }) => {
   }, [isActiveMarker]);
 
   return (
-    <div id="map" style={{ height: `754px` }} ref={mapRef}></div>
+    <div id="map" style={{ height: `${heightMap}px` }} ref={mapRef}></div>
   );
 };
 

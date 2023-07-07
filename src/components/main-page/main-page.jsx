@@ -1,21 +1,12 @@
-import React, {useState} from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import TYPES from "../../types";
 import OfferList from "../offers-list/offers-list";
 import Map from "../map/map";
 import { city } from "../../mocks/offers";
+import withHoveredOffer from "../hoc/with-hovered-offer";
 
-const MainPage = ({offerCards}) => {
-  const [hoveredOfferId, setHoveredOfferId] = useState(null);
-  const [clickOfferId, setClickOfferId] = useState(null);
-
-  const handleOfferCardHover = (offerId) => {
-    setHoveredOfferId(offerId);
-  };
-
-  const handleOfferCardClick = (offerId) => {
-    setClickOfferId(offerId);
-  };
+const MainPage = ({offerCards, hoveredOfferId, handleOfferCardHover}) => {
 
   return (
     <div className="page page--gray page--main">
@@ -101,12 +92,12 @@ const MainPage = ({offerCards}) => {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <OfferList offerCards={offerCards} offerCardHover={handleOfferCardHover} offerCardClick={handleOfferCardClick} />
+                <OfferList offerCards={offerCards} offerCardHover={handleOfferCardHover} />
               </div>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map city={city} points={offerCards} isActiveMarker={hoveredOfferId} />
+                <Map city={city} points={offerCards} heightMap={754} isActiveMarker={hoveredOfferId} />
               </section>
             </div>
           </div>
@@ -122,4 +113,4 @@ MainPage.propTypes = {
   ).isRequired,
 };
 
-export default MainPage;
+export default withHoveredOffer(MainPage);

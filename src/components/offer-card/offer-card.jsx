@@ -3,7 +3,7 @@ import TYPES from "../../types";
 import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
 
-const OfferCard = ({card, onOfferCardHover, onOfferCardClick}) => {
+const OfferCard = ({card, onOfferCardHover, isNearOffer}) => {
   const {id, href, img, price, name, type, premium} = card;
 
   const handleMouseEnter = () => {
@@ -14,19 +14,15 @@ const OfferCard = ({card, onOfferCardHover, onOfferCardClick}) => {
     onOfferCardHover(null);
   };
 
-  const handleMouseClick = () => {
-    onOfferCardClick(id);
-  };
-
   return (
-    <article className="cities__place-card place-card"
+    <article className={`${isNearOffer? `near-places__card` : `cities__place-card`} place-card`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
       <div className="place-card__mark">
         <span>{premium ? `Premium` : ``}</span>
       </div>
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      <div className={`${isNearOffer ? `near-places__image-wrapper` : `cities__image-wrapper`} place-card__image-wrapper`}>
         <a href={href}>
           <img
             className="place-card__image"
@@ -61,7 +57,6 @@ const OfferCard = ({card, onOfferCardHover, onOfferCardClick}) => {
             pathname: `/offer/${id}`,
             state: {id}
           }}
-          onClick={handleMouseClick}
           >
             {name}
           </Link>
@@ -75,7 +70,6 @@ const OfferCard = ({card, onOfferCardHover, onOfferCardClick}) => {
 OfferCard.propTypes = {
   card: PropTypes.shape(TYPES).isRequired,
   onOfferCardHover: PropTypes.func.isRequired,
-  onOfferCardClick: PropTypes.func.isRequired
 };
 
 export default OfferCard;

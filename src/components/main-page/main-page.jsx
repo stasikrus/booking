@@ -5,8 +5,10 @@ import OfferList from "../offers-list/offers-list";
 import Map from "../map/map";
 import { city } from "../../mocks/offers";
 import withHoveredOffer from "../hoc/with-hovered-offer";
+import { connect } from "react-redux";
+import { ActionCreator } from "../../store/action";
 
-const MainPage = ({offerCards, hoveredOfferId, handleOfferCardHover}) => {
+const MainPage = ({offerCards, hoveredOfferId, handleOfferCardHover, changeCity}) => {
 
   return (
     <div className="page page--gray page--main">
@@ -39,8 +41,8 @@ const MainPage = ({offerCards, hoveredOfferId, handleOfferCardHover}) => {
           <section className="locations container">
             <ul className="locations__list tabs__list">
               <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Paris</span>
+                <a className="locations__item-link tabs__item" href="#" >
+                  <span onClick={changeCity}>Paris</span>
                 </a>
               </li>
               <li className="locations__item">
@@ -113,4 +115,11 @@ MainPage.propTypes = {
   ).isRequired,
 };
 
-export default withHoveredOffer(MainPage);
+const mapDispatchToProps = (dispatch) => ({
+  changeCity(evt) {
+    dispatch(ActionCreator.changeCity(evt));
+  },
+});
+
+export default withHoveredOffer(connect(null, mapDispatchToProps)(MainPage));
+

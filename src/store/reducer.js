@@ -10,7 +10,8 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionType.CHANGE_CITY:
       return {
-        city: action.payload,
+        ...state,
+        city: action.payload.city,
         // offers: //Функция по поиску предложений в выбранном городе
       }
   }

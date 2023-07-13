@@ -14,7 +14,7 @@ const App = ({offerCards}) => {
     <BrowserRouter>
       <Switch>
         <Route exact path="/">
-          <MainPage offerCards={offerCards} />
+          <MainPage />
         </Route>
         <Route exact path="/login">
           <LoginPage />

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import TYPES from "../../types";
 
 const FavoriteCard = ({card}) => {
-  const {id, href, img, price, name, type, premium} = card;
+  const {img, price, name, type} = card;
 
   return (
     <article className="favorites__card place-card">

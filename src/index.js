@@ -9,9 +9,11 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 const store = createStore(reducer, composeWithDevTools());
 
+const offersState = store.getState().offers;
+
 ReactDOM.render(
   <Provider store={store}>
-    <App offerCards={offersData} />
+    <App offerCards={offersState} />
   </Provider>,
   document.querySelector(`#root`)
 );

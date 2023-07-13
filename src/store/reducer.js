@@ -1,9 +1,13 @@
 import { offersData } from "../mocks/offers";
 import { ActionType } from "./action";
+import { filterOffersByCity } from "../utils";
+
+const DEFAULT_CITY = `Amsterdam`;
 
 const initialState = {
-  city: `Amsterdam`,
+  city: DEFAULT_CITY,
   offers: offersData,
+  filteredOffers: filterOffersByCity(offersData, DEFAULT_CITY),
 };
 
 const reducer = (state = initialState, action) => {
@@ -12,7 +16,17 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         city: action.payload.city,
-        // offers: //Функция по поиску предложений в выбранном городе
+        filteredOffers: action.payload.filteredOffers
+      }
+    case ActionType.CHANGE_SORT:
+      return {
+        ...state,
+        filteredOffers: action.payload.offers,
+      }
+    case ActionType.RESET_SORT:
+      return {
+        ...state,
+        filteredOffers: action.payload.filteredOffers
       }
   }
 

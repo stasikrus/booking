@@ -1,4 +1,15 @@
-export const city = [52.38333, 4.9];
+export const cityMap = [
+  {
+    city: 'Amsterdam',
+    latitude: 52.38333,
+    longitude: 4.9
+  },
+  {
+    city: 'Paris',
+    latitude: 48.8534,
+    longitude: 2.3488
+  }
+];
 
 export const offersData = [
   {
@@ -12,7 +23,8 @@ export const offersData = [
     location: {
       latitude: 52.3909553943508,
       longitude: 4.85309666406198
-    }
+    },
+    city: `Amsterdam`,
   },
   {
     id: 2,
@@ -25,7 +37,8 @@ export const offersData = [
     location: {
       latitude: 52.369553943508,
       longitude: 4.85309666406198
-    }
+    },
+    city: `Amsterdam`,
   },
   {
     id: 3,
@@ -36,9 +49,10 @@ export const offersData = [
     type: `Apartment`,
     premium: false,
     location: {
-      latitude: 52.3909553943508,
-      longitude: 4.929309666406198
-    }
+      latitude: 48.85833478555735,
+      longitude: 2.294416925129237
+    },
+    city: `Paris`,
   },
   {
     id: 4,
@@ -66,4 +80,13 @@ export const offersData = [
       longitude: 4.85309666406198
     }
   }
+];
+
+export const CITY = [
+  `Amsterdam`,
+  `Paris`,
+  `Cologne`,
+  `Brussels`,
+  `Hamburg`,
+  `Dusseldorf`
 ];

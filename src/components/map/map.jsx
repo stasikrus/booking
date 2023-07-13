@@ -1,15 +1,19 @@
 import React, { useEffect, useRef } from "react";
 import leaflet from 'leaflet';
 import PropTypes from 'prop-types';
+import { connect } from "react-redux";
+import { filterCityMapByName } from "../../utils";
 
 import "leaflet/dist/leaflet.css";
 
-const Map = ({ city, points, heightMap, isActiveMarker }) => {
+const Map = ({ city, points, heightMap, isActiveMarker, cityState }) => {
   const mapRef = useRef();
+
+  const currentCityMap = filterCityMapByName(city, cityState);
 
   useEffect(() => {
     mapRef.current = leaflet.map(`map`, {
-      center: city,
+      center: [currentCityMap.latitude, currentCityMap.longitude],
       zoom: 12
     });
 
@@ -22,7 +26,7 @@ const Map = ({ city, points, heightMap, isActiveMarker }) => {
     return () => {
       mapRef.current.remove();
     };
-  }, []);
+  }, [currentCityMap]);
 
   useEffect(() => {
     points.forEach((point) => {
@@ -41,11 +45,17 @@ const Map = ({ city, points, heightMap, isActiveMarker }) => {
       .addTo(mapRef.current)
       .bindPopup(point.name);
     });
-  }, [isActiveMarker]);
+  }, [isActiveMarker, currentCityMap]);
 
   return (
     <div id="map" style={{ height: `${heightMap}px` }} ref={mapRef}></div>
   );
 };
 
-export default Map;
+const mapStateToProps = (state) => ({
+  cityState: state.city,
+  offers: state.offers,
+});
+
+
+export default connect(mapStateToProps)(Map);

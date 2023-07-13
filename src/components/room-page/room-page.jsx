@@ -5,7 +5,7 @@ import ReviewsList from "../reviews-list/reviews-list";
 import PropTypes from "prop-types";
 import TYPES from "../../types";
 import Map from "../map/map";
-import { city } from "../../mocks/offers";
+import { cityMap } from "../../mocks/offers";
 import OfferList from "../offers-list/offers-list";
 import withHoveredOffer from "../hoc/with-hovered-offer";
 
@@ -169,7 +169,7 @@ const RoomPage = ({offer, hoveredOfferId, handleOfferCardHover}) => {
             </div>
           </div>
           <section className="property__map map">
-            <Map city={city} points={offersNear} heightMap={579} isActiveMarker={hoveredOfferId} />
+            <Map city={cityMap} points={offersNear} heightMap={579} isActiveMarker={hoveredOfferId} />
           </section>
         </section>
         <div className="container">

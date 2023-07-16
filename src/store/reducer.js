@@ -1,6 +1,7 @@
 import { offersData } from "../mocks/offers";
 import { ActionType } from "./action";
 import { filterOffersByCity } from "../utils";
+import { AuthorizationStatus } from "../const";
 
 const DEFAULT_CITY = `Amsterdam`;
 
@@ -8,6 +9,8 @@ const initialState = {
   city: DEFAULT_CITY,
   offers: offersData,
   filteredOffers: filterOffersByCity(offersData, DEFAULT_CITY),
+  authorizationStatus: AuthorizationStatus.NO_AUTH,
+  isDataLoaded: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -27,6 +30,17 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         filteredOffers: action.payload.filteredOffers
+      }
+    case ActionType.REQUIRED_AUTHORIZATION:
+      return {
+        ...state,
+        authorizationStatus: action.payload.authorizationStatus
+      }
+    case ActionType.LOAD_OFFERS:
+      return {
+        ...state,
+        offers: action.payload.offers,
+        isDataLoaded: true
       }
   }
 

@@ -1,4 +1,5 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
+import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import TYPES from "../../types";
 import OfferList from "../offers-list/offers-list";
@@ -6,18 +7,34 @@ import Map from "../map/map";
 import { cityMap } from "../../mocks/offers";
 import ListOfCities from "../list-of-cities/list-of-cities";
 import SortingList from "../sorting-list/sorting-list";
-import { getFilteredOffers, getSelectedCity } from "../../store/selectors";
+import { getFilteredOffers, getSelectedCity, getIsDataLoaded } from "../../store/selectors";
+import { fetchOffersList } from "../../store/api-actions";
+import LoadingScreen from "../loading-screen/loading-screen";
 
 const MainPage = () => {
 
   const selectedCity = getSelectedCity();
   const filteredOffers = getFilteredOffers();
+  const isDataLoaded = getIsDataLoaded();
+  const dispatch = useDispatch();
 
   const [hoveredOfferId, setHoveredOfferId] = useState(null);
 
   const handleOfferCardHover = (offerId) => {
     setHoveredOfferId(offerId);
   };
+
+  useEffect(() => {
+    if (!isDataLoaded) {
+      dispatch(fetchOffersList())
+    }
+  }, [isDataLoaded]);
+
+  if (!isDataLoaded) {
+    return (
+      <LoadingScreen />
+    );
+  }
 
   return (
     <div className="page page--gray page--main">
@@ -64,7 +81,7 @@ const MainPage = () => {
                     <use xlinkHref="#icon-arrow-select" />
                   </svg>
                 </span>
-                <SortingList />
+                <SortingList selectedCity={selectedCity} filteredOffers={filteredOffers} />
               </form>
               <div className="cities__places-list places__list tabs__content">
                 <OfferList offerCards={filteredOffers} offerCardHover={handleOfferCardHover} />

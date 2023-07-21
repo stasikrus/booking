@@ -5,13 +5,22 @@ const SORT_TYPE = {
   POPULAR: `Popular`
 }
 
-function filterOffersByCity(offers, city) {
-  return offers.filter((offer) => offer.city === city);
+function filterOffersByCity(offers, currentCity) {
+  return offers.filter(({city}) => city.name === currentCity);
 }
 
 function filterCityMapByName(offers, city) {
   return offers.find((offer) => offer.city === city);
 }
+
+const toggleFavoriteById = (offers, id) => {
+  const index = offers.findIndex(obj => obj.id === id);
+  if (index !== -1) {
+    offers[index].is_favorite = !offers[index].is_favorite;
+  }
+  return offers;
+};
+
 
 const sortOffers = (filter, offers) => {
   switch(filter) {
@@ -24,4 +33,4 @@ const sortOffers = (filter, offers) => {
   }
 }
 
-export {filterOffersByCity, filterCityMapByName, sortOffers, SORT_TYPE};
+export {filterOffersByCity, filterCityMapByName, sortOffers, toggleFavoriteById, SORT_TYPE};

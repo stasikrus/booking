@@ -2,19 +2,18 @@ import React, { useEffect, useRef } from "react";
 import leaflet from 'leaflet';
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
-import { filterCityMapByName } from "../../utils";
 
 import "leaflet/dist/leaflet.css";
 
-const Map = ({ city, points, heightMap, isActiveMarker, cityState }) => {
+const Map = ({ points, heightMap, isActiveMarker }) => {
   const mapRef = useRef();
 
-  const currentCityMap = filterCityMapByName(city, cityState);
+  const currentCityMap = points[0].city.location;
 
   useEffect(() => {
     mapRef.current = leaflet.map(`map`, {
       center: [currentCityMap.latitude, currentCityMap.longitude],
-      zoom: 12
+      zoom: currentCityMap.zoom
     });
 
     leaflet
@@ -43,7 +42,7 @@ const Map = ({ city, points, heightMap, isActiveMarker, cityState }) => {
         icon: customIcon
       })
       .addTo(mapRef.current)
-      .bindPopup(point.name);
+      .bindPopup(point.title);
     });
   }, [isActiveMarker, currentCityMap]);
 

@@ -7,6 +7,7 @@ import NotFoundPage from "../not-found-page/not-found-page";
 import PropTypes from "prop-types";
 import TYPES from "../../types";
 import {Switch, Route, BrowserRouter} from "react-router-dom";
+import PrivateRoute from "../private-route/private-route";
 
 const App = ({offerCards}) => {
 
@@ -19,11 +20,12 @@ const App = ({offerCards}) => {
         <Route exact path="/login">
           <LoginPage />
         </Route>
-        <Route exact path="/favorites">
-          <FavoritesPage offerCards={offerCards} />
-        </Route>
+        <PrivateRoute exact path="/favorites"
+          render={() => <FavoritesPage offerCards={offerCards} />}
+        >
+        </PrivateRoute>
         <Route exact path="/offer/:id">
-            <RoomPage offer={offerCards} />
+            <RoomPage />
         </Route>
         <Route>
           <NotFoundPage />

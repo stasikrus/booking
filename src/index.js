@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./components/app/app";
-import { offersData } from "./mocks/offers";
 import {createStore, applyMiddleware} from "redux"
 import thunk from "redux-thunk";
 import { reducer } from "./store/reducer";

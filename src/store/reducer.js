@@ -1,16 +1,16 @@
-import { offersData } from "../mocks/offers";
 import { ActionType } from "./action";
-import { filterOffersByCity } from "../utils";
 import { AuthorizationStatus } from "../const";
 
 const DEFAULT_CITY = `Amsterdam`;
 
 const initialState = {
   city: DEFAULT_CITY,
-  offers: offersData,
-  filteredOffers: filterOffersByCity(offersData, DEFAULT_CITY),
+  offers: [],
+  filteredOffers: [],
   authorizationStatus: AuthorizationStatus.NO_AUTH,
-  isDataLoaded: false
+  isDataLoaded: false,
+  user: null,
+  commentsMap: {},
 };
 
 const reducer = (state = initialState, action) => {
@@ -34,13 +34,29 @@ const reducer = (state = initialState, action) => {
     case ActionType.REQUIRED_AUTHORIZATION:
       return {
         ...state,
-        authorizationStatus: action.payload.authorizationStatus
+        authorizationStatus: action.payload
       }
     case ActionType.LOAD_OFFERS:
       return {
         ...state,
         offers: action.payload.offers,
-        isDataLoaded: true
+        filteredOffers: action.payload.filteredOffers,
+        isDataLoaded: true,
+      }
+    case ActionType.ADD_TO_FAVORITES:
+      return {
+        ...state,
+        filteredOffers: action.payload.filteredOffers
+      }
+     case ActionType.LOGIN_SUCCESS:
+      return {
+        ...state,
+        user: action.payload
+      }
+     case ActionType.STORE_COMMENTS:
+      return {
+        ...state,
+        commentsMap: action.payload
       }
   }
 

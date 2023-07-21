@@ -3,11 +3,11 @@ import OfferCard from "../offer-card/offer-card";
 import TYPES from "../../types";
 import PropTypes from "prop-types";
 
-const OfferList = ({offerCards, offerCardHover, isNearOffer}) => {
+const OfferList = ({offerCards, offerCardHover, isNearOffer, onRedirectToLogin}) => {
 
   return (
     offerCards.map((card) => {
-      return <OfferCard card={card} key={card.id} onOfferCardHover={offerCardHover} isNearOffer={isNearOffer} />;
+      return <OfferCard card={card} key={card.id} onOfferCardHover={offerCardHover} isNearOffer={isNearOffer} onRedirectToLogin={onRedirectToLogin} />;
     })
   );
 };

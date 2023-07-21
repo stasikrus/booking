@@ -3,4 +3,6 @@ const AuthorizationStatus = {
   NO_AUTH: `NO_AUTH`,
 };
 
-export {AuthorizationStatus};
+const BACKEND_URL = `https://6.react.pages.academy/six-cities`;
+
+export {AuthorizationStatus, BACKEND_URL};

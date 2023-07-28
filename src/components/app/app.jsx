@@ -4,12 +4,10 @@ import RoomPage from "../room-page/room-page";
 import FavoritesPage from "../favorites-page/favorites-page";
 import LoginPage from "../login-page/login-page";
 import NotFoundPage from "../not-found-page/not-found-page";
-import PropTypes from "prop-types";
-import TYPES from "../../types";
-import {Switch, Route, BrowserRouter} from "react-router-dom";
+import {Switch, Route, BrowserRouter, Redirect} from "react-router-dom";
 import PrivateRoute from "../private-route/private-route";
 
-const App = ({offerCards}) => {
+const App = () => {
 
   return (
     <BrowserRouter>
@@ -21,24 +19,19 @@ const App = ({offerCards}) => {
           <LoginPage />
         </Route>
         <PrivateRoute exact path="/favorites"
-          render={() => <FavoritesPage offerCards={offerCards} />}
+          render={() => <FavoritesPage />}
         >
         </PrivateRoute>
-        <Route exact path="/offer/:id">
+        <Route path="/offer/:id">
             <RoomPage />
         </Route>
-        <Route>
+        <Route path="/not-found">
           <NotFoundPage />
         </Route>
+        <Redirect to="/not-found" />
       </Switch>
     </BrowserRouter>
   );
-};
-
-App.propTypes = {
-  offerCards: PropTypes.arrayOf(
-      PropTypes.shape(TYPES)
-  ).isRequired
 };
 
 export default App;

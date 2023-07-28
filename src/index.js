@@ -21,11 +21,9 @@ const store = createStore(reducer, composeWithDevTools(
 
 store.dispatch(checkAuth());
 
-const offersState = store.getState().offers;
-
 ReactDOM.render(
   <Provider store={store}>
-    <App offerCards={offersState} />
+    <App />
   </Provider>,
   document.querySelector(`#root`)
 );

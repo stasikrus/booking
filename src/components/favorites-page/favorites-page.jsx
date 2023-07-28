@@ -1,10 +1,26 @@
-import React from "react";
+import React, { useState, useEffect }  from "react";
 import {Link} from "react-router-dom";
 import FavoritesList from "../favorites-list/favorites-list";
-import TYPES from "../../types";
-import PropTypes from "prop-types";
+import { getFavorites } from "../../store/selectors";
+import { useDispatch } from "react-redux";
+import LoadingScreen from "../loading-screen/loading-screen";
+import { fetchFavoritesOffers } from "../../store/api-actions";
 
-const FavoritesPage = ({offerCards}) => {
+const FavoritesPage = () => {
+  const [loading, setLoading] = useState(true);
+  const favorites = getFavorites();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchFavoritesOffers())
+      .then(() => setLoading(false))
+      .catch((error) => console.log(error))
+  }, []);
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
+
   return (
     <div className="page">
       <header className="header">
@@ -44,7 +60,7 @@ const FavoritesPage = ({offerCards}) => {
                   </div>
                 </div>
                 <div className="favorites__places">
-                  <FavoritesList offerCards={offerCards} />
+                  <FavoritesList offerCards={favorites} />
                 </div>
               </li>
 
@@ -101,12 +117,6 @@ const FavoritesPage = ({offerCards}) => {
       </footer>
     </div>
   );
-};
-
-FavoritesPage.propTypes = {
-  offerCards: PropTypes.arrayOf(
-      PropTypes.shape(TYPES)
-  ).isRequired
 };
 
 export default FavoritesPage;

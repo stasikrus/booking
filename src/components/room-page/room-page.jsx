@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {Link, useHistory, useParams} from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import CommentForm from "../comment-form/comment-form";
 import ReviewsList from "../reviews-list/reviews-list";
-import PropTypes from "prop-types";
 import Map from "../map/map";
 import OfferList from "../offers-list/offers-list";
-import {getFilteredOffers, getAuthorizationStatus} from "../../store/selectors";
+import { getAuthorizationStatus } from "../../store/selectors";
 import { useDispatch } from "react-redux";
 import { AuthorizationStatus } from "../../const";
-import { ActionCreator } from "../../store/action";
 import { BACKEND_URL } from "../../const";
 import LoadingScreen from "../loading-screen/loading-screen";
-import { fetchCommentsList } from "../../store/api-actions";
+import { fetchCommentsList, appendFavorite } from "../../store/api-actions";
 import HeaderNav from "../header-nav/header-nav";
 
 const RoomPage = () => {
@@ -25,15 +23,6 @@ const RoomPage = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const authorizationStatus = getAuthorizationStatus();
-  const filteredOffers = getFilteredOffers();
-
-  const handleToBookmarksClick = () => {
-    if (authorizationStatus === AuthorizationStatus.NO_AUTH) {
-      history.push("/login");
-    } else {
-      dispatch(ActionCreator.addToFavorites(id, filteredOffers));
-    }
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,26 +30,59 @@ const RoomPage = () => {
         const offerResponse = await axios.get(`${BACKEND_URL}/hotels/${id}`);
         setOffer(offerResponse.data);
 
-        const offersNearResponse = await axios.get(`${BACKEND_URL}/hotels/${id}/nearby`);
+        const offersNearResponse = await axios.get(
+          `${BACKEND_URL}/hotels/${id}/nearby`
+        );
         setOffersNear(offersNearResponse.data);
 
-        dispatch(fetchCommentsList(id))
-          .then(() => setLoading(false));
-
+        dispatch(fetchCommentsList(id)).then(() => setLoading(false));
       } catch (error) {
-        console.error(error);
+        if (error.response && error.response.status === 404) {
+          history.push("/not-found");
+        } else {
+          console.error(error);
+        }
       }
     };
 
     fetchData();
-  }, [id]);
+  }, []);
 
   if (loading) {
-    return <LoadingScreen />
+    return <LoadingScreen />;
   }
 
-  const { title, is_premium, price, images, bedrooms, max_adults, rating, description, goods, host } = offer;
-  const {avatar_url, is_pro, name} = host;
+  const {
+    title,
+    is_premium,
+    price,
+    images,
+    bedrooms,
+    max_adults,
+    rating,
+    description,
+    goods,
+    host,
+    is_favorite,
+  } = offer;
+  const { avatar_url, is_pro, name } = host;
+  const bookMarkActiveClass = is_favorite
+    ? `property__bookmark-button--active`
+    : ``;
+
+  const handleToBookmarksClick = () => {
+    if (authorizationStatus === AuthorizationStatus.NO_AUTH) {
+      history.push("/login");
+    } else if (is_favorite) {
+      dispatch(appendFavorite(id, 0)).then(() => {
+        setOffer((prevOffer) => ({ ...prevOffer, is_favorite: false }));
+      });
+    } else if (!is_favorite) {
+      dispatch(appendFavorite(id, 1)).then(() => {
+        setOffer((prevOffer) => ({ ...prevOffer, is_favorite: true }));
+      });
+    }
+  };
 
   return (
     <div className="page">
@@ -87,7 +109,7 @@ const RoomPage = () => {
                   >
                     <div className="header__avatar-wrapper user__avatar-wrapper"></div>
                     <span className="header__user-name user__name">
-                    <HeaderNav />
+                      <HeaderNav />
                     </span>
                   </a>
                 </li>
@@ -101,17 +123,15 @@ const RoomPage = () => {
         <section className="property">
           <div className="property__gallery-container container">
             <div className="property__gallery">
-              {images.map((image) => {
-                return (
-                  <div className="property__image-wrapper">
-                    <img
-                      className="property__image"
-                      src={image}
-                      alt="Photo studio"
-                    />
-                  </div>
-                );
-              })}
+              {images.map((image, index) => (
+                <div className="property__image-wrapper" key={`${index}-${id}`}>
+                  <img
+                    className="property__image"
+                    src={image}
+                    alt="Photo studio"
+                  />
+                </div>
+              ))}
             </div>
           </div>
           <div className="property__container container">
@@ -122,7 +142,7 @@ const RoomPage = () => {
               <div className="property__name-wrapper">
                 <h1 className="property__name">{title}</h1>
                 <button
-                  className="property__bookmark-button button"
+                  className={`property__bookmark-button button ${bookMarkActiveClass}`}
                   type="button"
                   onClick={handleToBookmarksClick}
                 >
@@ -163,13 +183,17 @@ const RoomPage = () => {
               <div className="property__inside">
                 <h2 className="property__inside-title">What&apos;s inside</h2>
                 <ul className="property__inside-list">
-                  {goods.map((item) => {
-                    return (
-                      <li className="property__inside-item">{item}</li>
-                    )
-                  })}
+                  {goods.map((item, index) => (
+                    <li
+                      className="property__inside-item"
+                      key={`${id}-${index}`}
+                    >
+                      {item}
+                    </li>
+                  ))}
                 </ul>
               </div>
+
               <div className="property__host">
                 <h2 className="property__host-title">Meet the host</h2>
                 <div className="property__host-user user">
@@ -183,17 +207,21 @@ const RoomPage = () => {
                     />
                   </div>
                   <span className="property__user-name">{name}</span>
-                  {is_pro ? <span className="property__user-status">Pro</span> : ''}
+                  {is_pro ? (
+                    <span className="property__user-status">Pro</span>
+                  ) : (
+                    ""
+                  )}
                 </div>
                 <div className="property__description">
-                  <p className="property__text">
-                    {description}
-                  </p>
+                  <p className="property__text">{description}</p>
                 </div>
               </div>
               <section className="property__reviews reviews">
                 <ReviewsList />
-                {authorizationStatus === AuthorizationStatus.AUTH && <CommentForm hotel_id={id} />}
+                {authorizationStatus === AuthorizationStatus.AUTH && (
+                  <CommentForm hotel_id={id} />
+                )}
               </section>
             </div>
           </div>
@@ -215,9 +243,5 @@ const RoomPage = () => {
     </div>
   );
 };
-
-// RoomPage.propTypes = {
-//   offer: PropTypes.arrayOf(PropTypes.shape(TYPES)).isRequired,
-// };
 
 export default RoomPage;

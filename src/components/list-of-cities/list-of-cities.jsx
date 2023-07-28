@@ -1,9 +1,19 @@
 import React from "react";
-import {connect} from "react-redux";
+import {useDispatch} from "react-redux";
 import {CITY} from "../../mocks/offers";
 import {ActionCreator} from "../../store/action";
+import { getSelectedCity, getDefaultOffers } from "../../store/selectors";
 
-const ListOfCities = ({activeCity, changeCity, offers}) => {
+const ListOfCities = () => {
+
+  const activeCity = getSelectedCity();
+  const offers = getDefaultOffers();
+  const dispatch = useDispatch();
+
+  const handleChangeCity = (item, offers) => {
+    dispatch(ActionCreator.changeCity(item, offers));
+  };
+
   return (
     <ul className="locations__list tabs__list">
       {CITY.map((city) => (
@@ -12,7 +22,7 @@ const ListOfCities = ({activeCity, changeCity, offers}) => {
             className={`locations__item-link tabs__item ${activeCity === city ? "tabs__item--active" : ""}`}
             href="#"
           >
-            <span onClick={() => changeCity(city, offers)}>{city}</span>
+            <span onClick={() => handleChangeCity(city, offers)}>{city}</span>
           </a>
         </li>
       ))}
@@ -20,15 +30,4 @@ const ListOfCities = ({activeCity, changeCity, offers}) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  activeCity: state.city,
-  offers: state.offers
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  changeCity(item, offers) {
-    dispatch(ActionCreator.changeCity(item, offers));
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ListOfCities);
+export default ListOfCities;

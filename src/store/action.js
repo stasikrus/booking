@@ -1,16 +1,19 @@
-import { sortOffers, filterOffersByCity, toggleFavoriteById } from "../utils";
+import { sortOffers, filterOffersByCity, toggleFavoriteById, toggleFavoriteState } from "../utils";
 
 const DEFAULT_CITY = `Amsterdam`;
 
 const ActionType = {
-  CHANGE_CITY: `city/changeCity`,
+  CHANGE_CITY: `user/changeCity`,
   CHANGE_SORT: `sort/changeSort`,
   RESET_SORT: `sort/resetSort`,
   LOAD_OFFERS: `data/loadOffers`,
   REQUIRED_AUTHORIZATION: `user/requiredAuthorization`,
+  LOAD_FAVORITES: `data/loadFavorites`,
   ADD_TO_FAVORITES: `user/addToFavorites`,
   LOGIN_SUCCESS: `user/loginSuccess`,
   STORE_COMMENTS: `data/loadComments`,
+  CHANGE_FAVORITE: `user/changeFavorite`,
+  HOVERED_OFFER: `user/hoverOffer`
 };
 
 const ActionCreator = {
@@ -41,7 +44,7 @@ const ActionCreator = {
     type: ActionType.LOAD_OFFERS,
     payload: {
       offers: offers,
-      filteredOffers: filterOffersByCity(offers, DEFAULT_CITY)
+      // filteredOffers: filterOffersByCity(offers, DEFAULT_CITY)
     },
   }),
   addToFavorites: (id, filteredOffers) => ({
@@ -57,6 +60,21 @@ const ActionCreator = {
   storeComments: (comments) => ({
     type: ActionType.STORE_COMMENTS,
     payload: comments,
+  }),
+  loadFavorites: (favorites) => ({
+    type: ActionType.LOAD_FAVORITES,
+    payload: favorites,
+  }),
+  changeFavorite: (offers, filteredOffers, id) => ({
+    type: ActionType.CHANGE_FAVORITE,
+    payload: {
+      filteredOffers: toggleFavoriteState(filteredOffers, id),
+      offers: toggleFavoriteState(offers, id)
+    }
+  }),
+  hoverOffer: (id) => ({
+    type: ActionType.HOVERED_OFFER,
+    payload: id,
   })
 };
 

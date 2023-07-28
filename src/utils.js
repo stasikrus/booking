@@ -13,6 +13,14 @@ function filterCityMapByName(offers, city) {
   return offers.find((offer) => offer.city === city);
 }
 
+const handleToBookmarksClick = () => {
+  if (authorizationStatus === AuthorizationStatus.NO_AUTH) {
+    onRedirectToLogin(); // Вызываем колбэк для перенаправления на страницу входа
+  } else {
+    dispatch(ActionCreator.addToFavorites(id, filteredOffers));
+  }
+};
+
 const toggleFavoriteById = (offers, id) => {
   const index = offers.findIndex(obj => obj.id === id);
   if (index !== -1) {
@@ -20,7 +28,6 @@ const toggleFavoriteById = (offers, id) => {
   }
   return offers;
 };
-
 
 const sortOffers = (filter, offers) => {
   switch(filter) {
@@ -33,4 +40,10 @@ const sortOffers = (filter, offers) => {
   }
 }
 
-export {filterOffersByCity, filterCityMapByName, sortOffers, toggleFavoriteById, SORT_TYPE};
+const toggleFavoriteState = (data, id) => {
+  return data.map((item) =>
+    item.id === id ? { ...item, is_favorite: !item.is_favorite } : item
+  );
+};
+
+export {filterOffersByCity, filterCityMapByName, sortOffers, toggleFavoriteById, SORT_TYPE, toggleFavoriteState};

@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { ActionCreator } from "../../store/action";
 import { SORT_TYPE } from "../../utils";
 import { getDefaultOffers } from "../../store/selectors";
+import PropTypes from "prop-types";
 
 const SortingList = ({filteredOffers, selectedCity}) => {
 
@@ -37,6 +38,11 @@ const SortingList = ({filteredOffers, selectedCity}) => {
       </li>
     </ul>
   );
+};
+
+SortingList.propTypes = {
+  filteredOffers: PropTypes.array.isRequired,
+  selectedCity: PropTypes.string.isRequired
 };
 
 export default SortingList;

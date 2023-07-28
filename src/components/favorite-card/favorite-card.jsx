@@ -1,17 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
-import TYPES from "../../types";
+import {Link} from "react-router-dom";
 
 const FavoriteCard = ({card}) => {
-  const {img, price, name, type} = card;
+  const {id, href, preview_image, price, title, type, is_premium} = card;
 
   return (
     <article className="favorites__card place-card">
       <div className="favorites__image-wrapper place-card__image-wrapper">
-        <a href="#">
+        <a href={href}>
           <img
             className="place-card__image"
-            src={img}
+            src={preview_image}
             width="150"
             height="110"
             alt="Place image"
@@ -41,7 +41,13 @@ const FavoriteCard = ({card}) => {
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{name}</a>
+          <Link to={{
+            pathname: `/offer/${id}`,
+            state: {id}
+          }}
+          >
+            {title}
+          </Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>
@@ -50,7 +56,7 @@ const FavoriteCard = ({card}) => {
 };
 
 FavoriteCard.propTypes = {
-  card: PropTypes.shape(TYPES).isRequired,
+  card: PropTypes.object.isRequired,
 };
 
 export default FavoriteCard;

@@ -11,6 +11,8 @@ const initialState = {
   isDataLoaded: false,
   user: null,
   commentsMap: {},
+  favorites: [],
+  hoveredOffers: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -40,7 +42,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         offers: action.payload.offers,
-        filteredOffers: action.payload.filteredOffers,
+        // filteredOffers: action.payload.filteredOffers,
         isDataLoaded: true,
       }
     case ActionType.ADD_TO_FAVORITES:
@@ -57,6 +59,22 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         commentsMap: action.payload
+      }
+     case ActionType.LOAD_FAVORITES:
+      return {
+        ...state,
+        favorites: action.payload
+      }
+     case ActionType.CHANGE_FAVORITE:
+      return {
+        ...state,
+        offers: action.payload.offers,
+        filteredOffers: action.payload.filteredOffers,
+      }
+     case ActionType.HOVERED_OFFER:
+      return {
+        ...state,
+        hoveredOffers: action.payload
       }
   }
 

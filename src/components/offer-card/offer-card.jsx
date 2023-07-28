@@ -1,32 +1,40 @@
-import React from "react";
-import TYPES from "../../types";
+import React, {useCallback} from "react";
 import PropTypes from "prop-types";
-import {Link, Redirect} from "react-router-dom";
+import {Link} from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { getAuthorizationStatus, getFilteredOffers } from "../../store/selectors";
+import { getAuthorizationStatus, getDefaultOffers } from "../../store/selectors";
 import { AuthorizationStatus } from "../../const";
+import { appendFavorite } from "../../store/api-actions";
 import { ActionCreator } from "../../store/action";
 
-const OfferCard = ({card, onOfferCardHover, isNearOffer, onRedirectToLogin}) => {
-  const {id, href, preview_image, price, title, type, is_premium} = card;
+const OfferCard = ({card, onOfferCardHover, isNearOffer, onRedirectToLogin, filteredOffers, offerCardLeave}) => {
+
+  const {id, href, preview_image, price, title, type, is_premium, is_favorite} = card;
+  const activeBookmarkClass = is_favorite ? `place-card__bookmark-button--active` : ``;
 
   const dispatch = useDispatch();
   const authorizationStatus = getAuthorizationStatus();
-  const filteredOffers = getFilteredOffers();
+  const defaultOffers = getDefaultOffers();
 
   const handleMouseEnter = () => {
-    onOfferCardHover(id);
+    // dispatch(ActionCreator.hoverOffer(id));
+    onOfferCardHover(id)
   };
 
   const handleMouseLeave = () => {
-    onOfferCardHover(null);
+    dispatch(ActionCreator.hoverOffer(null));
+    offerCardLeave();
   };
 
   const handleToBookmarksClick = () => {
     if (authorizationStatus === AuthorizationStatus.NO_AUTH) {
-      onRedirectToLogin(); // Вызываем колбэк для перенаправления на страницу входа
-    } else {
-      dispatch(ActionCreator.addToFavorites(id, filteredOffers));
+      onRedirectToLogin();
+    } else if (is_favorite) {
+      dispatch(appendFavorite(id, 0))
+      dispatch(ActionCreator.changeFavorite(defaultOffers, filteredOffers, id));
+    } else if (!is_favorite) {
+      dispatch(appendFavorite(id, 1));
+      dispatch(ActionCreator.changeFavorite(defaultOffers, filteredOffers, id));
     }
   };
 
@@ -55,7 +63,7 @@ const OfferCard = ({card, onOfferCardHover, isNearOffer, onRedirectToLogin}) => 
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className="place-card__bookmark-button button" type="button" onClick={handleToBookmarksClick}>
+          <button className={`place-card__bookmark-button ${activeBookmarkClass} button`} type="button" onClick={handleToBookmarksClick}>
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
@@ -84,8 +92,10 @@ const OfferCard = ({card, onOfferCardHover, isNearOffer, onRedirectToLogin}) => 
 };
 
 OfferCard.propTypes = {
-  card: PropTypes.shape(TYPES).isRequired,
-  onOfferCardHover: PropTypes.func.isRequired,
+  card: PropTypes.object.isRequired,
+  onOfferCardHover: PropTypes.func,
+  isNearOffer: PropTypes.bool,
+  onRedirectToLogin: PropTypes.func
 };
 
 export default OfferCard;

@@ -11,6 +11,11 @@ const fetchCommentsList = (id) => (dispatch, _getState, api) => (
     .then(({data}) => dispatch(ActionCreator.storeComments(data)))
 );
 
+const fetchFavoritesOffers = () => (dispatch, _getState, api) => (
+  api.get(`/favorite`)
+    .then(({data}) => dispatch(ActionCreator.loadFavorites(data)))
+);
+
 const checkAuth = () => (dispatch, _getState, api) => (
   api.get(`/login`)
     .then((response) => {
@@ -41,6 +46,12 @@ const appendUserComment = (id, comment, rating) => (dispatch, _getState, api) =>
     });
 };
 
+const appendFavorite = (id, status) => (dispatch, _getState, api) => (
+  api.post(`/favorite/${id}/${status}`)
+    .then((response) => dispatch(ActionCreator.loadFavorites(response)))
+);
 
 
-export {fetchOffersList, checkAuth, login, appendUserComment, fetchCommentsList};
+
+
+export {fetchOffersList, checkAuth, login, appendUserComment, fetchCommentsList, fetchFavoritesOffers, appendFavorite};

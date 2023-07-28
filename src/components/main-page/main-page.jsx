@@ -1,34 +1,34 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import PropTypes from "prop-types";
-import TYPES from "../../types";
+import { useDispatch, useSelector } from "react-redux";
 import OfferList from "../offers-list/offers-list";
 import Map from "../map/map";
-import { cityMap } from "../../mocks/offers";
 import ListOfCities from "../list-of-cities/list-of-cities";
 import SortingList from "../sorting-list/sorting-list";
-import {
-  getFilteredOffers,
-  getSelectedCity,
-  getIsDataLoaded,
-} from "../../store/selectors";
+import {getFilteredOffers, getSelectedCity, getIsDataLoaded} from "../../store/selectors";
 import { fetchOffersList } from "../../store/api-actions";
 import LoadingScreen from "../loading-screen/loading-screen";
 import { useHistory } from "react-router-dom";
 import HeaderNav from "../header-nav/header-nav";
 
 const MainPage = () => {
+  const [hoveredOfferId, setHoveredOfferId] = useState(null);
+
   const selectedCity = getSelectedCity();
-  const filteredOffers = getFilteredOffers();
+  const filteredOffers = useSelector(getFilteredOffers);
+
   const isDataLoaded = getIsDataLoaded();
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const [hoveredOfferId, setHoveredOfferId] = useState(null);
 
   const handleOfferCardHover = (offerId) => {
     setHoveredOfferId(offerId);
   };
+
+  const handleMouseLeave = () => {
+    setHoveredOfferId(null);
+  };
+
 
   const handleRedirectToLogin = () => {
     history.push("/login");
@@ -106,13 +106,13 @@ const MainPage = () => {
                   offerCards={filteredOffers}
                   offerCardHover={handleOfferCardHover}
                   onRedirectToLogin={handleRedirectToLogin}
+                  offerCardLeave={handleMouseLeave}
                 />
               </div>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
                 <Map
-                  city={cityMap}
                   points={filteredOffers}
                   heightMap={754}
                   isActiveMarker={hoveredOfferId}
@@ -124,10 +124,6 @@ const MainPage = () => {
       </main>
     </div>
   );
-};
-
-MainPage.propTypes = {
-  offerCards: PropTypes.arrayOf(PropTypes.shape(TYPES)).isRequired,
 };
 
 export default MainPage;

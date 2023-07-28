@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ActionCreator } from "../../store/action";
 import { SORT_TYPE } from "../../utils";
 import { getDefaultOffers } from "../../store/selectors";
@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 const SortingList = ({filteredOffers, selectedCity}) => {
 
   const dispatch = useDispatch();
-  const defaultOffers = getDefaultOffers();
+  const defaultOffers = useSelector(getDefaultOffers);
 
   const changeSort = (filter) => {
     dispatch(ActionCreator.changeSort(filter, filteredOffers));

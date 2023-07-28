@@ -4,7 +4,7 @@ import OfferList from "../offers-list/offers-list";
 import Map from "../map/map";
 import ListOfCities from "../list-of-cities/list-of-cities";
 import SortingList from "../sorting-list/sorting-list";
-import {getFilteredOffers, getSelectedCity, getIsDataLoaded} from "../../store/selectors";
+import { getSelectedCity, getIsDataLoaded, getFilteredOffers} from "../../store/selectors";
 import { fetchOffersList } from "../../store/api-actions";
 import LoadingScreen from "../loading-screen/loading-screen";
 import { useHistory } from "react-router-dom";
@@ -13,13 +13,13 @@ import HeaderNav from "../header-nav/header-nav";
 const MainPage = () => {
   const [hoveredOfferId, setHoveredOfferId] = useState(null);
 
-  const selectedCity = getSelectedCity();
+  const selectedCity = useSelector(getSelectedCity);
   const filteredOffers = useSelector(getFilteredOffers);
 
-  const isDataLoaded = getIsDataLoaded();
+  const isDataLoaded = useSelector(getIsDataLoaded);
   const dispatch = useDispatch();
   const history = useHistory();
-
+  console.log(hoveredOfferId)
 
   const handleOfferCardHover = (offerId) => {
     setHoveredOfferId(offerId);
@@ -43,6 +43,7 @@ const MainPage = () => {
   if (!isDataLoaded) {
     return <LoadingScreen />;
   }
+
 
   return (
     <div className="page page--gray page--main">

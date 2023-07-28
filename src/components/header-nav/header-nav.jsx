@@ -2,10 +2,11 @@ import React from "react";
 import { getUserLogin, getAuthorizationStatus } from "../../store/selectors";
 import { AuthorizationStatus } from "../../const";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const HeaderNav = () => {
-  const authorizationStatus = getAuthorizationStatus();
-  const userLogin = getUserLogin();
+  const authorizationStatus = useSelector(getAuthorizationStatus);
+  const userLogin = useSelector(getUserLogin);
 
   return (
     <>

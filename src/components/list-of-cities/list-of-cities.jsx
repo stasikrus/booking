@@ -1,13 +1,13 @@
 import React from "react";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {CITY} from "../../mocks/offers";
 import {ActionCreator} from "../../store/action";
 import { getSelectedCity, getDefaultOffers } from "../../store/selectors";
 
 const ListOfCities = () => {
 
-  const activeCity = getSelectedCity();
-  const offers = getDefaultOffers();
+  const activeCity = useSelector(getSelectedCity);
+  const offers = useSelector(getDefaultOffers);
   const dispatch = useDispatch();
 
   const handleChangeCity = (item, offers) => {

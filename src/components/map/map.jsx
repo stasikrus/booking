@@ -2,12 +2,13 @@ import React, { useEffect, useRef } from "react";
 import leaflet from 'leaflet';
 import PropTypes from 'prop-types';
 import { getActiveHoverOffer } from "../../store/selectors";
+import { useSelector } from "react-redux";
 
 import "leaflet/dist/leaflet.css";
 
 const Map = ({ points, heightMap, isActiveMarker }) => {
   const mapRef = useRef();
-  const activeHoverOffer = getActiveHoverOffer();
+  const activeHoverOffer = useSelector(getActiveHoverOffer);
 
   const currentCityMap = points[0].city.location;
 
@@ -31,7 +32,7 @@ const Map = ({ points, heightMap, isActiveMarker }) => {
   useEffect(() => {
     points.forEach((point) => {
       const customIcon = leaflet.icon({
-        iconUrl: point.id === activeHoverOffer ? `./img/pin-active.svg`: `./img/pin.svg`,
+        iconUrl: point.id === isActiveMarker ? `./img/pin-active.svg`: `./img/pin.svg`,
         iconSize: [27, 39]
       });
 
@@ -45,7 +46,7 @@ const Map = ({ points, heightMap, isActiveMarker }) => {
       .addTo(mapRef.current)
       .bindPopup(point.title);
     });
-  }, [activeHoverOffer, currentCityMap]);
+  }, [isActiveMarker, currentCityMap]);
 
   return (
     <div id="map" style={{ height: `${heightMap}px` }}></div>

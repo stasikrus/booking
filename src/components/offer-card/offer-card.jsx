@@ -1,7 +1,7 @@
 import React, {useCallback} from "react";
 import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getAuthorizationStatus, getDefaultOffers } from "../../store/selectors";
 import { AuthorizationStatus } from "../../const";
 import { appendFavorite } from "../../store/api-actions";
@@ -13,8 +13,8 @@ const OfferCard = ({card, onOfferCardHover, isNearOffer, onRedirectToLogin, filt
   const activeBookmarkClass = is_favorite ? `place-card__bookmark-button--active` : ``;
 
   const dispatch = useDispatch();
-  const authorizationStatus = getAuthorizationStatus();
-  const defaultOffers = getDefaultOffers();
+  const authorizationStatus = useSelector(getAuthorizationStatus);
+  const defaultOffers = useSelector(getDefaultOffers);
 
   const handleMouseEnter = () => {
     // dispatch(ActionCreator.hoverOffer(id));

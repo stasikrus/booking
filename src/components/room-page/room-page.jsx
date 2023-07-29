@@ -6,7 +6,7 @@ import ReviewsList from "../reviews-list/reviews-list";
 import Map from "../map/map";
 import OfferList from "../offers-list/offers-list";
 import { getAuthorizationStatus } from "../../store/selectors";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AuthorizationStatus } from "../../const";
 import { BACKEND_URL } from "../../const";
 import LoadingScreen from "../loading-screen/loading-screen";
@@ -22,7 +22,7 @@ const RoomPage = () => {
 
   const history = useHistory();
   const dispatch = useDispatch();
-  const authorizationStatus = getAuthorizationStatus();
+  const authorizationStatus = useSelector(getAuthorizationStatus);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -102,17 +102,7 @@ const RoomPage = () => {
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <a
-                    className="header__nav-link header__nav-link--profile"
-                    href="#"
-                  >
-                    <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-                    <span className="header__user-name user__name">
-                      <HeaderNav />
-                    </span>
-                  </a>
-                </li>
+                <HeaderNav />
               </ul>
             </nav>
           </div>

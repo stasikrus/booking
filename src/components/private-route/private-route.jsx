@@ -9,7 +9,7 @@ import { checkAuth } from '../../store/api-actions';
 
 const PrivateRoute = ({ render, path, exact }) => {
   const [loading, setLoading] = useState(true);
-  const authorizationStatus = getAuthorizationStatus();
+  const authorizationStatus = useSelector(getAuthorizationStatus);
   const dispatch = useDispatch();
 
   useEffect(() => {

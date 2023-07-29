@@ -1,34 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import OfferList from "../offers-list/offers-list";
 import Map from "../map/map";
 import ListOfCities from "../list-of-cities/list-of-cities";
 import SortingList from "../sorting-list/sorting-list";
-import { getSelectedCity, getIsDataLoaded, getFilteredOffers} from "../../store/selectors";
+import { getSelectedCity, getIsDataLoaded, getFilteredOffers, getFilteredOffersByCity} from "../../store/selectors";
 import { fetchOffersList } from "../../store/api-actions";
 import LoadingScreen from "../loading-screen/loading-screen";
 import { useHistory } from "react-router-dom";
 import HeaderNav from "../header-nav/header-nav";
 
 const MainPage = () => {
-  const [hoveredOfferId, setHoveredOfferId] = useState(null);
 
   const selectedCity = useSelector(getSelectedCity);
   const filteredOffers = useSelector(getFilteredOffers);
+  const filteredOffersByCity = useSelector(getFilteredOffersByCity);
 
   const isDataLoaded = useSelector(getIsDataLoaded);
   const dispatch = useDispatch();
   const history = useHistory();
-  console.log(hoveredOfferId)
-
-  const handleOfferCardHover = (offerId) => {
-    setHoveredOfferId(offerId);
-  };
-
-  const handleMouseLeave = () => {
-    setHoveredOfferId(null);
-  };
-
 
   const handleRedirectToLogin = () => {
     history.push("/login");
@@ -43,7 +33,6 @@ const MainPage = () => {
   if (!isDataLoaded) {
     return <LoadingScreen />;
   }
-
 
   return (
     <div className="page page--gray page--main">
@@ -63,12 +52,7 @@ const MainPage = () => {
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <a className="header__nav-link header__nav-link--profile" href="#">
-                    <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-                    <HeaderNav />
-                  </a>
-                </li>
+                <HeaderNav />
               </ul>
             </nav>
           </div>
@@ -97,26 +81,20 @@ const MainPage = () => {
                     <use xlinkHref="#icon-arrow-select" />
                   </svg>
                 </span>
-                <SortingList
-                  selectedCity={selectedCity}
-                  filteredOffers={filteredOffers}
-                />
+                <SortingList />
               </form>
               <div className="cities__places-list places__list tabs__content">
                 <OfferList
                   offerCards={filteredOffers}
-                  offerCardHover={handleOfferCardHover}
                   onRedirectToLogin={handleRedirectToLogin}
-                  offerCardLeave={handleMouseLeave}
                 />
               </div>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
                 <Map
-                  points={filteredOffers}
+                  points={filteredOffersByCity}
                   heightMap={754}
-                  isActiveMarker={hoveredOfferId}
                 />
               </section>
             </div>

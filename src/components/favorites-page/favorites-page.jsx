@@ -2,13 +2,14 @@ import React, { useState, useEffect }  from "react";
 import {Link} from "react-router-dom";
 import FavoritesList from "../favorites-list/favorites-list";
 import { getFavorites } from "../../store/selectors";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import LoadingScreen from "../loading-screen/loading-screen";
 import { fetchFavoritesOffers } from "../../store/api-actions";
+import HeaderNav from "../header-nav/header-nav";
 
 const FavoritesPage = () => {
   const [loading, setLoading] = useState(true);
-  const favorites = getFavorites();
+  const favorites = useSelector(getFavorites);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -33,13 +34,7 @@ const FavoritesPage = () => {
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <a className="header__nav-link header__nav-link--profile" href="#">
-                    <div className="header__avatar-wrapper user__avatar-wrapper">
-                    </div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                  </a>
-                </li>
+                <HeaderNav />
               </ul>
             </nav>
           </div>

@@ -1,6 +1,5 @@
 import { sortOffers, filterOffersByCity, toggleFavoriteById, toggleFavoriteState } from "../utils";
-
-const DEFAULT_CITY = `Amsterdam`;
+import { SORT_TYPE } from "../utils";
 
 const ActionType = {
   CHANGE_CITY: `user/changeCity`,
@@ -17,18 +16,16 @@ const ActionType = {
 };
 
 const ActionCreator = {
-  changeCity: (item, offers) => ({
+  changeCity: (city) => ({
     type: ActionType.CHANGE_CITY,
     payload: {
-      city: item,
-      filteredOffers: filterOffersByCity(offers, item)
+      city: city,
+      sorting: SORT_TYPE.POPULAR
     }
   }),
-  changeSort: (filter, offers) => ({
+  changeSort: (filter) => ({
     type: ActionType.CHANGE_SORT,
-    payload: {
-      offers: sortOffers(filter, offers),
-    }
+    payload: filter
   }),
   resetSort: (city, offers) => ({
     type: ActionType.RESET_SORT,

@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 
 import "leaflet/dist/leaflet.css";
 
-const Map = ({ points, heightMap, isActiveMarker }) => {
+const Map = ({ points, heightMap }) => {
   const mapRef = useRef();
   const activeHoverOffer = useSelector(getActiveHoverOffer);
 
@@ -30,13 +30,15 @@ const Map = ({ points, heightMap, isActiveMarker }) => {
   }, [currentCityMap]);
 
   useEffect(() => {
+    const markers = [];
+
     points.forEach((point) => {
       const customIcon = leaflet.icon({
-        iconUrl: point.id === isActiveMarker ? `./img/pin-active.svg`: `./img/pin.svg`,
+        iconUrl: point.id === activeHoverOffer ? `./img/pin-active.svg`: `./img/pin.svg`,
         iconSize: [27, 39]
       });
 
-      leaflet.marker({
+      const marker = leaflet.marker({
         lat: point.location.latitude,
         lng: point.location.longitude
       },
@@ -45,8 +47,14 @@ const Map = ({ points, heightMap, isActiveMarker }) => {
       })
       .addTo(mapRef.current)
       .bindPopup(point.title);
+      markers.push(marker);
     });
-  }, [isActiveMarker, currentCityMap]);
+
+    return () => {
+      markers.forEach(marker => marker.remove());
+    };
+
+  }, [activeHoverOffer, points]);
 
   return (
     <div id="map" style={{ height: `${heightMap}px` }}></div>
@@ -56,7 +64,6 @@ const Map = ({ points, heightMap, isActiveMarker }) => {
 Map.propTypes = {
   points: PropTypes.array.isRequired,
   heightMap: PropTypes.number.isRequired,
-  isActiveMarker: PropTypes.number,
 }
 
-export default Map;
+export default React.memo(Map);

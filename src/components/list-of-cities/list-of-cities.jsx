@@ -2,16 +2,15 @@ import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {CITY} from "../../mocks/offers";
 import {ActionCreator} from "../../store/action";
-import { getSelectedCity, getDefaultOffers } from "../../store/selectors";
+import {getSelectedCity} from "../../store/selectors";
 
 const ListOfCities = () => {
-
   const activeCity = useSelector(getSelectedCity);
-  const offers = useSelector(getDefaultOffers);
   const dispatch = useDispatch();
 
-  const handleChangeCity = (item, offers) => {
-    dispatch(ActionCreator.changeCity(item, offers));
+  const handleChangeCity = (city, event) => {
+    event.preventDefault();
+    dispatch(ActionCreator.changeCity(city));
   };
 
   return (
@@ -21,8 +20,9 @@ const ListOfCities = () => {
           <a
             className={`locations__item-link tabs__item ${activeCity === city ? "tabs__item--active" : ""}`}
             href="#"
+            onClick={(event) => handleChangeCity(city, event)}
           >
-            <span onClick={() => handleChangeCity(city, offers)}>{city}</span>
+            <span>{city}</span>
           </a>
         </li>
       ))}
@@ -30,4 +30,4 @@ const ListOfCities = () => {
   );
 };
 
-export default ListOfCities;
+export default React.memo(ListOfCities);

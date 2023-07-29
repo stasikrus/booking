@@ -17,13 +17,13 @@ const OfferCard = ({card, onOfferCardHover, isNearOffer, onRedirectToLogin, filt
   const defaultOffers = useSelector(getDefaultOffers);
 
   const handleMouseEnter = () => {
-    // dispatch(ActionCreator.hoverOffer(id));
-    onOfferCardHover(id)
+    dispatch(ActionCreator.hoverOffer(id));
+    // onOfferCardHover(id)
   };
 
   const handleMouseLeave = () => {
     dispatch(ActionCreator.hoverOffer(null));
-    offerCardLeave();
+    // offerCardLeave();
   };
 
   const handleToBookmarksClick = () => {

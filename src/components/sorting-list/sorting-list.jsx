@@ -1,21 +1,14 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { ActionCreator } from "../../store/action";
 import { SORT_TYPE } from "../../utils";
-import { getDefaultOffers } from "../../store/selectors";
-import PropTypes from "prop-types";
 
-const SortingList = ({filteredOffers, selectedCity}) => {
+const SortingList = () => {
 
   const dispatch = useDispatch();
-  const defaultOffers = useSelector(getDefaultOffers);
 
   const changeSort = (filter) => {
-    dispatch(ActionCreator.changeSort(filter, filteredOffers));
-  };
-
-  const resetSort = () => {
-    dispatch(ActionCreator.resetSort(selectedCity, defaultOffers));
+    dispatch(ActionCreator.changeSort(filter));
   };
 
   const handleChangeSort = (filter) => () => {
@@ -24,7 +17,7 @@ const SortingList = ({filteredOffers, selectedCity}) => {
 
   return (
     <ul className="places__options places__options--custom places__options--opened">
-      <li className="places__option places__option--active" tabIndex="0" onClick={resetSort}>
+      <li className="places__option places__option--active" tabIndex="0" onClick={handleChangeSort(SORT_TYPE.POPULAR)}>
         Popular
       </li>
       <li className="places__option" tabIndex="0" onClick={handleChangeSort(SORT_TYPE.PRICE_TO_HIGH)}>
@@ -40,9 +33,4 @@ const SortingList = ({filteredOffers, selectedCity}) => {
   );
 };
 
-SortingList.propTypes = {
-  filteredOffers: PropTypes.array.isRequired,
-  selectedCity: PropTypes.string.isRequired
-};
-
-export default SortingList;
+export default React.memo(SortingList);

@@ -8,19 +8,20 @@ const HeaderNav = () => {
   const authorizationStatus = useSelector(getAuthorizationStatus);
   const userLogin = useSelector(getUserLogin);
 
+  const isAuth = authorizationStatus === AuthorizationStatus.AUTH;
+  const linkTo = isAuth ? "/favorites" : "/login";
+  const linkContent = isAuth ? userLogin : "Sign in";
+
   return (
-    <>
-      {authorizationStatus === AuthorizationStatus.AUTH ? (
-        <Link to="/favorites" className="header__nav-link header__nav-link--profile">
-          <span className="header__user-name user__name">{userLogin}</span>
-        </Link>
-      ) : (
-        <Link to="/login" className="header__nav-link header__nav-link--profile">
-          <span className="header__login">Sign in</span>
-        </Link>
-      )}
-    </>
+    <li className="header__nav-item user">
+      <Link to={linkTo} className="header__nav-link header__nav-link--profile">
+        <div className="header__avatar-wrapper user__avatar-wrapper"></div>
+        <span className={isAuth ? "header__user-name user__name" : "header__login"}>
+          {linkContent}
+        </span>
+      </Link>
+    </li>
   );
 };
 
-export default HeaderNav;
+export default React.memo(HeaderNav);

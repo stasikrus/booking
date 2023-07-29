@@ -1,5 +1,6 @@
 import { ActionType } from "./action";
 import { AuthorizationStatus } from "../const";
+import { SORT_TYPE } from "../utils";
 
 const DEFAULT_CITY = `Amsterdam`;
 
@@ -12,7 +13,8 @@ const initialState = {
   user: null,
   commentsMap: {},
   favorites: [],
-  hoveredOffers: null
+  hoveredOffers: null,
+  sorting: SORT_TYPE.POPULAR
 };
 
 const reducer = (state = initialState, action) => {
@@ -21,12 +23,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         city: action.payload.city,
-        filteredOffers: action.payload.filteredOffers
+        sorting: action.payload.sorting
       }
     case ActionType.CHANGE_SORT:
       return {
         ...state,
-        filteredOffers: action.payload.offers,
+        sorting: action.payload,
       }
     case ActionType.RESET_SORT:
       return {

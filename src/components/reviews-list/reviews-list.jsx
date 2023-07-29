@@ -1,9 +1,10 @@
 import React from "react";
 import ReviewsItem from "../reviews-item/reviews-item";
 import { getComments } from "../../store/selectors";
+import { useSelector } from "react-redux";
 
 const ReviewsList = () => {
-  const offerComments = getComments();
+  const offerComments = useSelector(getComments);
 
   return (
     <>

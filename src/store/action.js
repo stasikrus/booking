@@ -1,10 +1,9 @@
-import { sortOffers, filterOffersByCity, toggleFavoriteById, toggleFavoriteState } from "../utils";
+import { filterOffersByCity, toggleFavoriteById, toggleFavoriteState } from "../utils";
 import { SORT_TYPE } from "../utils";
 
 const ActionType = {
   CHANGE_CITY: `user/changeCity`,
   CHANGE_SORT: `sort/changeSort`,
-  RESET_SORT: `sort/resetSort`,
   LOAD_OFFERS: `data/loadOffers`,
   REQUIRED_AUTHORIZATION: `user/requiredAuthorization`,
   LOAD_FAVORITES: `data/loadFavorites`,
@@ -12,7 +11,8 @@ const ActionType = {
   LOGIN_SUCCESS: `user/loginSuccess`,
   STORE_COMMENTS: `data/loadComments`,
   CHANGE_FAVORITE: `user/changeFavorite`,
-  HOVERED_OFFER: `user/hoverOffer`
+  HOVERED_OFFER: `user/hoverOffer`,
+  RESET_HOVER_STATE: `user/resetHoverState`
 };
 
 const ActionCreator = {
@@ -27,12 +27,6 @@ const ActionCreator = {
     type: ActionType.CHANGE_SORT,
     payload: filter
   }),
-  resetSort: (city, offers) => ({
-    type: ActionType.RESET_SORT,
-    payload: {
-      filteredOffers: filterOffersByCity(offers, city)
-    }
-  }),
   requireAuthorization: (status) => ({
     type: ActionType.REQUIRED_AUTHORIZATION,
     payload: status,
@@ -43,12 +37,6 @@ const ActionCreator = {
       offers: offers,
       // filteredOffers: filterOffersByCity(offers, DEFAULT_CITY)
     },
-  }),
-  addToFavorites: (id, filteredOffers) => ({
-    type: ActionType.ADD_TO_FAVORITES,
-    payload: {
-      filteredOffers: toggleFavoriteById(filteredOffers, id),
-    }
   }),
   loginSuccess: (login) => ({
     type: ActionType.LOGIN_SUCCESS,
@@ -62,16 +50,19 @@ const ActionCreator = {
     type: ActionType.LOAD_FAVORITES,
     payload: favorites,
   }),
-  changeFavorite: (offers, filteredOffers, id) => ({
+  changeFavorite: (offers, id) => ({
     type: ActionType.CHANGE_FAVORITE,
     payload: {
-      filteredOffers: toggleFavoriteState(filteredOffers, id),
       offers: toggleFavoriteState(offers, id)
     }
   }),
   hoverOffer: (id) => ({
     type: ActionType.HOVERED_OFFER,
     payload: id,
+  }),
+  resetHoverState: (state) => ({
+    type: ActionType.RESET_HOVER_STATE,
+    payload: state
   })
 };
 

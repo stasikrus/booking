@@ -11,6 +11,19 @@ export const getFavorites = state => state.favorites;
 export const getActiveHoverOffer = state => state.hoveredOffers;
 export const getActiveSorting = state => state.sorting;
 
+// export const getIsFavoriteById = (state, id) => {
+//   const offer = state.offers.find((offer) => offer.id === Number(id));
+//   return offer ? offer.is_favorite : null;
+// };
+
+export const getIsFavoriteById = createSelector(
+  [getDefaultOffers, (_state, id) => id],
+  (offers, id) => {
+    const offer = offers.find((offer) => offer.id === Number(id));
+    return offer ? offer.is_favorite : null;
+  }
+);
+
 export const getFilteredOffersByCity = createSelector(
   [getDefaultOffers, getSelectedCity],
   (offers, selectedCity) => {

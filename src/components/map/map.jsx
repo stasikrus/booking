@@ -2,13 +2,15 @@ import React, { useEffect, useRef } from "react";
 import leaflet from 'leaflet';
 import PropTypes from 'prop-types';
 import { getActiveHoverOffer } from "../../store/selectors";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { ActionCreator } from "../../store/action";
 
 import "leaflet/dist/leaflet.css";
 
 const Map = ({ points, heightMap }) => {
   const mapRef = useRef();
   const activeHoverOffer = useSelector(getActiveHoverOffer);
+  const dispatch = useDispatch();
 
   const currentCityMap = points[0].city.location;
 
@@ -55,6 +57,12 @@ const Map = ({ points, heightMap }) => {
     };
 
   }, [activeHoverOffer, points]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(ActionCreator.hoverOffer(null));
+    }
+  }, []);
 
   return (
     <div id="map" style={{ height: `${heightMap}px` }}></div>

@@ -1,88 +1,32 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { Link, useHistory, useParams } from "react-router-dom";
+import React from "react";
+import { Link, useParams } from "react-router-dom";
 import CommentForm from "../comment-form/comment-form";
 import ReviewsList from "../reviews-list/reviews-list";
 import Map from "../map/map";
 import OfferList from "../offers-list/offers-list";
 import { getAuthorizationStatus } from "../../store/selectors";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { AuthorizationStatus } from "../../const";
-import { BACKEND_URL } from "../../const";
 import LoadingScreen from "../loading-screen/loading-screen";
-import { fetchCommentsList, appendFavorite } from "../../store/api-actions";
 import HeaderNav from "../header-nav/header-nav";
+import useOfferData from "../../hooks/useOfferData";
+import useHandleToBookmarksClick from "../../hooks/useHandleToBookmarksClick";
 
 const RoomPage = () => {
+
   const { id } = useParams();
-
-  const [offer, setOffer] = useState(null);
-  const [offersNear, setOffersNear] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  const history = useHistory();
-  const dispatch = useDispatch();
   const authorizationStatus = useSelector(getAuthorizationStatus);
+  const { offer, offersNear, loading } = useOfferData(id);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const offerResponse = await axios.get(`${BACKEND_URL}/hotels/${id}`);
-        setOffer(offerResponse.data);
-
-        const offersNearResponse = await axios.get(
-          `${BACKEND_URL}/hotels/${id}/nearby`
-        );
-        setOffersNear(offersNearResponse.data);
-
-        dispatch(fetchCommentsList(id)).then(() => setLoading(false));
-      } catch (error) {
-        if (error.response && error.response.status === 404) {
-          history.push("/not-found");
-        } else {
-          console.error(error);
-        }
-      }
-    };
-
-    fetchData();
-  }, []);
+  const handleToBookmarksClick = useHandleToBookmarksClick(id);
 
   if (loading) {
     return <LoadingScreen />;
-  }
-
-  const {
-    title,
-    is_premium,
-    price,
-    images,
-    bedrooms,
-    max_adults,
-    rating,
-    description,
-    goods,
-    host,
-    is_favorite,
-  } = offer;
-  const { avatar_url, is_pro, name } = host;
-  const bookMarkActiveClass = is_favorite
-    ? `property__bookmark-button--active`
-    : ``;
-
-  const handleToBookmarksClick = () => {
-    if (authorizationStatus === AuthorizationStatus.NO_AUTH) {
-      history.push("/login");
-    } else if (is_favorite) {
-      dispatch(appendFavorite(id, 0)).then(() => {
-        setOffer((prevOffer) => ({ ...prevOffer, is_favorite: false }));
-      });
-    } else if (!is_favorite) {
-      dispatch(appendFavorite(id, 1)).then(() => {
-        setOffer((prevOffer) => ({ ...prevOffer, is_favorite: true }));
-      });
-    }
   };
+
+  const { title, is_premium, price, images, bedrooms, max_adults, rating, description, goods, host, is_favorite, } = offer;
+  const { avatar_url, is_pro, name } = host;
+  const bookMarkActiveClass = is_favorite ? `property__bookmark-button--active` : ``;
 
   return (
     <div className="page">

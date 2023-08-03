@@ -52,6 +52,4 @@ const appendFavorite = (id, status) => (dispatch, _getState, api) => (
 );
 
 
-
-
 export {fetchOffersList, checkAuth, login, appendUserComment, fetchCommentsList, fetchFavoritesOffers, appendFavorite};

@@ -7,14 +7,13 @@ const DEFAULT_CITY = `Amsterdam`;
 const initialState = {
   city: DEFAULT_CITY,
   offers: [],
-  filteredOffers: [],
   authorizationStatus: AuthorizationStatus.NO_AUTH,
   isDataLoaded: false,
   user: null,
   commentsMap: {},
-  favorites: [],
   hoveredOffers: null,
-  sorting: SORT_TYPE.POPULAR
+  sorting: SORT_TYPE.POPULAR,
+  favorites: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -30,11 +29,6 @@ const reducer = (state = initialState, action) => {
         ...state,
         sorting: action.payload,
       }
-    case ActionType.RESET_SORT:
-      return {
-        ...state,
-        filteredOffers: action.payload.filteredOffers
-      }
     case ActionType.REQUIRED_AUTHORIZATION:
       return {
         ...state,
@@ -44,13 +38,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         offers: action.payload.offers,
-        // filteredOffers: action.payload.filteredOffers,
         isDataLoaded: true,
-      }
-    case ActionType.ADD_TO_FAVORITES:
-      return {
-        ...state,
-        filteredOffers: action.payload.filteredOffers
       }
      case ActionType.LOGIN_SUCCESS:
       return {
@@ -71,9 +59,13 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         offers: action.payload.offers,
-        filteredOffers: action.payload.filteredOffers,
       }
      case ActionType.HOVERED_OFFER:
+      return {
+        ...state,
+        hoveredOffers: action.payload
+      }
+     case ActionType.RESET_HOVER_STATE:
       return {
         ...state,
         hoveredOffers: action.payload

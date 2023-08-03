@@ -46,4 +46,6 @@ const toggleFavoriteState = (data, id) => {
   );
 };
 
-export {filterOffersByCity, filterCityMapByName, sortOffers, toggleFavoriteById, SORT_TYPE, toggleFavoriteState};
+const findOfferById = (offersArray, offerId) => offersArray.find(offer => offer.id === offerId);
+
+export {filterOffersByCity, filterCityMapByName, sortOffers, toggleFavoriteById, SORT_TYPE, toggleFavoriteState, findOfferById};

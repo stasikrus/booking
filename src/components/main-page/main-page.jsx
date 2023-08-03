@@ -7,7 +7,6 @@ import SortingList from "../sorting-list/sorting-list";
 import { getSelectedCity, getIsDataLoaded, getFilteredOffers, getFilteredOffersByCity} from "../../store/selectors";
 import { fetchOffersList } from "../../store/api-actions";
 import LoadingScreen from "../loading-screen/loading-screen";
-import { useHistory } from "react-router-dom";
 import HeaderNav from "../header-nav/header-nav";
 
 const MainPage = () => {
@@ -18,11 +17,6 @@ const MainPage = () => {
 
   const isDataLoaded = useSelector(getIsDataLoaded);
   const dispatch = useDispatch();
-  const history = useHistory();
-
-  const handleRedirectToLogin = () => {
-    history.push("/login");
-  };
 
   useEffect(() => {
     if (!isDataLoaded) {
@@ -73,20 +67,10 @@ const MainPage = () => {
               <b className="places__found">
                 {filteredOffers.length} places to stay in {selectedCity}
               </b>
-              <form className="places__sorting" action="#" method="get">
-                <span className="places__sorting-caption">Sort by</span>
-                <span className="places__sorting-type" tabIndex="0">
-                  Popular
-                  <svg className="places__sorting-arrow" width="7" height="4">
-                    <use xlinkHref="#icon-arrow-select" />
-                  </svg>
-                </span>
-                <SortingList />
-              </form>
+              <SortingList />
               <div className="cities__places-list places__list tabs__content">
                 <OfferList
                   offerCards={filteredOffers}
-                  onRedirectToLogin={handleRedirectToLogin}
                 />
               </div>
             </section>
